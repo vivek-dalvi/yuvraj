@@ -1,1 +1,478 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yuvraj Kishor Sable | BolStack</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --cyan: #55f6ff;
+  --blue: #537bff;
+  --purple: #b56bff;
+  --bg: #050611;
+}
+
+body {
+  min-height: 100vh;
+  overflow: hidden;
+  background: var(--bg);
+  color: white;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.scene {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    radial-gradient(ellipse at 50% 45%, #15204a 0%, transparent 45%),
+    radial-gradient(ellipse at 15% 80%, #11143a 0%, transparent 45%),
+    #050611;
+}
+
+/* Animated grid */
+.grid {
+  position: absolute;
+  inset: -50%;
+  z-index: -2;
+  opacity: 0.19;
+  background-image:
+    linear-gradient(#526bff 1px, transparent 1px),
+    linear-gradient(90deg, #526bff 1px, transparent 1px);
+  background-size: 55px 55px;
+  transform: perspective(500px) rotateX(60deg) scale(1.7);
+  animation: gridMove 12s linear infinite;
+  mask-image: linear-gradient(transparent, black 35%, black 70%, transparent);
+}
+
+@keyframes gridMove {
+  from { background-position: 0 0; }
+  to { background-position: 0 55px; }
+}
+
+/* Glowing background */
+.orb {
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.24;
+  z-index: -1;
+  animation: floatOrb 8s ease-in-out infinite alternate;
+}
+
+.orb.one {
+  background: #007dff;
+  top: 10%;
+  left: 10%;
+}
+
+.orb.two {
+  background: #9d28ff;
+  right: 8%;
+  bottom: 5%;
+  animation-delay: -4s;
+}
+
+@keyframes floatOrb {
+  from { transform: translate(0, 0) scale(0.9); }
+  to { transform: translate(65px, -40px) scale(1.2); }
+}
+
+/* Particle canvas */
+#particles {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.content {
+  width: 100%;
+  padding: 30px 20px;
+  text-align: center;
+  position: relative;
+  animation: enter 1.2s cubic-bezier(.2,.8,.2,1) both;
+}
+
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(35px) scale(0.96);
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #a8b7ff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  margin-bottom: 27px;
+  animation: fadeIn 1s 0.5s both;
+}
+
+.eyebrow::before,
+.eyebrow::after {
+  content: "";
+  height: 1px;
+  width: 30px;
+  background: linear-gradient(90deg, transparent, var(--cyan));
+}
+
+.eyebrow::after {
+  transform: rotate(180deg);
+}
+
+.name {
+  font-size: clamp(35px, 7.6vw, 90px);
+  line-height: 1.15;
+  font-weight: 900;
+  letter-spacing: clamp(0px, 0.7vw, 5px);
+  text-transform: uppercase;
+  perspective: 700px;
+  overflow-wrap: anywhere;
+  filter: drop-shadow(0 0 24px #4285ff38);
+}
+
+.name span {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(60px) rotateX(-80deg) scale(0.7);
+  animation: letterReveal 0.75s cubic-bezier(.2,.8,.2,1) forwards;
+  animation-delay: calc(0.045s * var(--i) + 0.4s);
+  background: linear-gradient(
+    180deg,
+    #ffffff 5%,
+    #c3faff 33%,
+    #69bfff 65%,
+    #8476ff 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: none;
+}
+
+.name .space {
+  width: 0.28em;
+}
+
+@keyframes letterReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(60px) rotateX(-80deg) scale(0.7);
+    filter: blur(9px);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(-7px) rotateX(12deg) scale(1.04);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotateX(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* Moving shine */
+.name-wrap {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+}
+
+.shine {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    transparent 35%,
+    #ffffffb8 48%,
+    #8cffff 50%,
+    transparent 63%
+  );
+  background-size: 220% 100%;
+  background-repeat: no-repeat;
+  background-position: 150% 0;
+  mix-blend-mode: screen;
+  opacity: 0.7;
+  animation: shineMove 3.5s 2.3s ease-in-out infinite;
+}
+
+@keyframes shineMove {
+  0%, 25% { background-position: 150% 0; }
+  55%, 100% { background-position: -150% 0; }
+}
+
+.subtitle {
+  margin-top: 25px;
+  color: #9ca9d4;
+  font-size: clamp(11px, 2vw, 14px);
+  font-weight: 500;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  opacity: 0;
+  animation: fadeIn 1s 2s forwards;
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+/* Animated separator */
+.separator {
+  width: 0;
+  max-width: 220px;
+  height: 2px;
+  margin: 30px auto 0;
+  background: linear-gradient(90deg, transparent, var(--cyan), var(--purple), transparent);
+  box-shadow: 0 0 15px #55f6ff;
+  animation: lineExpand 1.3s 1.7s ease forwards;
+}
+
+@keyframes lineExpand {
+  to { width: 60%; }
+}
+
+/* BolStack signature */
+.footer {
+  position: fixed;
+  bottom: 35px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  opacity: 0;
+  animation: fadeIn 1s 2.5s forwards;
+}
+
+.made {
+  display: block;
+  color: #65708f;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  margin-bottom: 8px;
+}
+
+.brand {
+  display: inline-block;
+  font-size: 21px;
+  font-weight: 900;
+  letter-spacing: 5px;
+  background: linear-gradient(90deg, #fff, #65f4ff, #a778ff, #fff);
+  background-size: 250% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: brandGlow 3s linear infinite;
+  filter: drop-shadow(0 0 10px #5b8bff65);
+}
+
+@keyframes brandGlow {
+  to { background-position: 250% center; }
+}
+
+/* Small screen adjustments */
+@media (max-width: 480px) {
+  .name {
+    font-size: clamp(30px, 9vw, 45px);
+    letter-spacing: 0;
+  }
+
+  .eyebrow {
+    letter-spacing: 3px;
+  }
+
+  .subtitle {
+    letter-spacing: 3px;
+    line-height: 2;
+  }
+
+  .footer {
+    bottom: 24px;
+  }
+
+  .brand {
+    font-size: 18px;
+    letter-spacing: 4px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
+</style>
+</head>
+
+<body>
+<main class="scene">
+  <div class="grid"></div>
+  <div class="orb one"></div>
+  <div class="orb two"></div>
+  <canvas id="particles" aria-hidden="true"></canvas>
+
+  <section class="content">
+    <div class="eyebrow">A Special Creation</div>
+
+    <div class="name-wrap">
+      <h1 class="name" id="name" aria-label="Yuvraj Kishor Sable"></h1>
+      <div class="shine"></div>
+    </div>
+
+    <p class="subtitle">Made to Stand Out · Built Different</p>
+    <div class="separator"></div>
+  </section>
+
+  <footer class="footer">
+    <span class="made">Made by</span>
+    <div class="brand">BOLSTACK</div>
+  </footer>
+</main>
+
+<script>
+/* Letter-by-letter name animation */
+const nameText = "Yuvraj Kishor Sable";
+const nameElement = document.getElementById("name");
+const fragment = document.createDocumentFragment();
+
+[...nameText].forEach((character, index) => {
+  const span = document.createElement("span");
+  span.style.setProperty("--i", index);
+
+  if (character === " ") {
+    span.className = "space";
+    span.textContent = "\u00A0";
+    span.setAttribute("aria-hidden", "true");
+  } else {
+    span.textContent = character;
+    span.setAttribute("aria-hidden", "true");
+  }
+
+  fragment.appendChild(span);
+});
+
+nameElement.appendChild(fragment);
+
+/* Responsive floating particle network */
+const canvas = document.getElementById("particles");
+const ctx = canvas.getContext("2d");
+
+let width = 0;
+let height = 0;
+let particles = [];
+let animationFrame;
+let lastFrame = 0;
+
+function resizeCanvas() {
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+  width = window.innerWidth;
+  height = window.innerHeight;
+
+  canvas.width = Math.round(width * dpr);
+  canvas.height = Math.round(height * dpr);
+  canvas.style.width = width + "px";
+  canvas.style.height = height + "px";
+
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  const count = Math.min(100, Math.max(35, Math.floor(width / 12)));
+
+  particles = Array.from({ length: count }, () => ({
+    x: Math.random() * width,
+    y: Math.random() * height,
+    vx: (Math.random() - 0.5) * 0.35,
+    vy: (Math.random() - 0.5) * 0.35,
+    radius: Math.random() * 1.7 + 0.5
+  }));
+}
+
+function drawParticles(timestamp) {
+  animationFrame = requestAnimationFrame(drawParticles);
+
+  if (timestamp - lastFrame < 30) return;
+  lastFrame = timestamp;
+
+  ctx.clearRect(0, 0, width, height);
+
+  for (let i = 0; i < particles.length; i++) {
+    const p = particles[i];
+
+    p.x += p.vx;
+    p.y += p.vy;
+
+    if (p.x < 0 || p.x > width) p.vx *= -1;
+    if (p.y < 0 || p.y > height) p.vy *= -1;
+
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+    ctx.fillStyle = "rgba(129, 211, 255, 0.8)";
+    ctx.fill();
+
+    for (let j = i + 1; j < particles.length; j++) {
+      const q = particles[j];
+      const dx = p.x - q.x;
+      const dy = p.y - q.y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+
+      if (distance < 105) {
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(q.x, q.y);
+        ctx.strokeStyle =
+          `rgba(100, 160, 255, ${0.16 * (1 - distance / 105)})`;
+        ctx.lineWidth = 0.7;
+        ctx.stroke();
+      }
+    }
+  }
+}
+
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
+animationFrame = requestAnimationFrame(drawParticles);
+
+/* Pause animation when the page is hidden */
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    cancelAnimationFrame(animationFrame);
+  } else {
+    lastFrame = 0;
+    animationFrame = requestAnimationFrame(drawParticles);
+  }
+});
+</script>
+</body>
+</html>
+
